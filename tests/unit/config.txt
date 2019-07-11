@@ -1,0 +1,4 @@
+[default]
+username = testuser
+password = testpassword
+hosturl = https://apiurl

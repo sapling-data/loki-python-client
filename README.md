@@ -9,3 +9,24 @@ We are currently not actively seeking contributions from the larger community. I
 
 # About Loki
 Loki is a closed source application server technology developed by Sapling Data, LLC. The Loki techology is a data oriented cloud operating system that allows you to build and deploy applications in the cloud. Loki automatically generates web services APIs from the models that you define in the application. For more information about the Loki technology please see https://saplingdata.com.
+
+# Quick Start
+First, install the library:
+
+    $ TBD...
+
+Next, set up credentials into a file of your choosing. In our examples and tests we install them in a file "~/loki-python-client/config.txt" on our local Mac OS. Next add your credentials and url for the Loki API:
+
+    [default]
+    username = myuser
+    password = mypassword
+    hosturl = https://host/appName
+
+# Development
+
+## Getting Started
+Install python 2.7, virtualenv, and setup your environment.
+
+Clone the git repo:
+
+    $ git clone https://github.com/mtruchard/loki-python-client.git
