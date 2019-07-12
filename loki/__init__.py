@@ -12,10 +12,10 @@
 
 __author__ = "mtruchard"
 
-import ConfigParser
+import configparser
 import os
-from urn import Urn
-from data import Data
+from loki.urn import Urn
+from loki.data import Data
 
 
 class Loki:
@@ -25,7 +25,7 @@ class Loki:
             """FileNotFoundError"""
             raise Exception("File not found: "+config_file_name)
 
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         self.properties = config.read(config_file_name)
         self._username = config.get('default', 'username')
         self._password = config.get('default', 'password')

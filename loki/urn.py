@@ -42,26 +42,27 @@ def is_resource_urn(urn):
     else:
         return False
 
+
 def get_last_segment(urn):
     """ Returns the last segment of the given urn """
     if urn is None:
         return None
         
-    index = -1;
-    index1 = urn.rfind(":");
-    index2 = urn.rfind("#");
-    index3 = urn.rfind("!");
-    if (index1 > index2 and index1 > index3):
-        index = index1;
-    elif (index2 > index3):
-        index = index2;
+    index = -1
+    index1 = urn.rfind(":")
+    index2 = urn.rfind("#")
+    index3 = urn.rfind("!")
+    if index1 > index2 and index1 > index3:
+        index = index1
+    elif index2 > index3:
+        index = index2
     else:
-        index = index3;
+        index = index3
         
-    if (index < 0):
-        lastSegment = urn;
+    if index < 0:
+        lastSegment = urn
     else:
-        lastSegment = urn[index + 1:];
+        lastSegment = urn[index + 1:]
     return lastSegment
 
 

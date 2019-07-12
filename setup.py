@@ -9,4 +9,7 @@ setup(name='loki-python-client',
       author_email='mtruchard@gmail.com',
       url='https://github.com/mtruchard/loki-python-client',
       packages=['loki'],
+      install_requires=[
+        'requests'
+      ]
      )

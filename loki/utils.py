@@ -22,7 +22,6 @@ def urn_to_url(urn):
 
 def to_loki_date(date):
     """ Returns a date in YYYY-MM-DD format. """
-    print "Formatting date: ", date
     if date == '':
         return "0000-00-00"
     else:

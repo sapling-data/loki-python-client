@@ -25,8 +25,11 @@ class TestList(unittest.TestCase):
         urn = "urn:com:loki:core:model:types"
         
         result = loki.data.list(urn,None)
-        print result
-        print result.json()
+        print(result)
+        self.assertEqual(200, result.status_code)
+        types = result.json()["results"]
+        for t in types:
+            print(t["urn"])
         
     def test_load_entity(self):
         loki = Loki(config_file)
@@ -35,8 +38,9 @@ class TestList(unittest.TestCase):
         view = "urn:com:loki:meta:model:types:entityView"
         
         result = loki.data.load_entity(urn,view,None)
-        print result
-        print result.json()
+        self.assertEqual(200, result.status_code)
+        print(result)
+        print(result.json())
 
     def test_load_resource(self):
         loki = Loki(config_file)
@@ -44,8 +48,9 @@ class TestList(unittest.TestCase):
         urn = "urn:com:loki:core:model:api:list!listApi.html"
 
         result = loki.data.load_resource(urn,None)
-        print result
-        print result.content
+        self.assertEqual(200, result.status_code)
+        print(result)
+        print(result.content)
 
     def test_download_resource(self):
         loki = Loki(config_file)
@@ -53,8 +58,23 @@ class TestList(unittest.TestCase):
         urn = "urn:com:loki:core:model:api:list!listApi.html"
 
         result = loki.data.download_resource(urn,None,"~/listApi.html")
-        print result
-        print result.content
+        self.assertEqual(200, result.status_code)
+        print(result)
+        print(result.content)
+
+    def test_query(self):
+        loki = Loki(config_file)
+
+        query_urn = "urn:com:loki:examples:model:queries:listDocuments"
+
+        result = loki.data.query(query_urn,None)
+        print(result.get_response())
+        print(result.get_response().content)
+        print(result.get_response().json())
+        self.assertEqual(200, result.get_response().status_code)
+        for r in result.to_array():
+            for v in r:
+                print(v)
 
 
 if __name__ == "__main__":

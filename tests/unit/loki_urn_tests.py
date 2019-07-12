@@ -27,26 +27,22 @@ class TestToLokiUrnSegment(unittest.TestCase):
         """ Tests that to_loki_urn_segment returns a value of None given various input. """
         loki = Loki("config.txt")
         for val in self.known_vals:
-            result = loki.urn.getValidSegment(val)
+            result = loki.urn.get_valid_segment(val)
             self.assertEqual(self.known_vals[val], result)
             
     def testIsNew(self):
         loki = Loki("config.txt")
-        self.assertEqual(loki.urn.isNew('urn:com:loki:$'),True)
-        self.assertEqual(loki.urn.isNew('urn:$:loki:data!text.txt'),True)
-        self.assertEqual(loki.urn.isNew('urn:com:loki:8181'),False)
+        self.assertEqual(loki.urn.is_new('urn:com:loki:$'),True)
+        self.assertEqual(loki.urn.is_new('urn:$:loki:data!text.txt'),True)
+        self.assertEqual(loki.urn.is_new('urn:com:loki:8181'),False)
         
     def testGetLastSegment(self):
         loki = Loki("config.txt")
-        self.assertEqual(loki.urn.getLastSegment('urn:com:loki!test.jpg'),'test.jpg')
-        self.assertEqual(loki.urn.getLastSegment('urn#embeded1'),'embeded1')
-        self.assertEqual(loki.urn.getLastSegment('urn:$:data:test2'),'test2')
-        self.assertEqual(loki.urn.getLastSegment(''),'')
-        self.assertEqual(loki.urn.getLastSegment(None),None)
-
-    def testGetLastSegment2(self):
-        loki = Loki("config.txt")
-        self.assertEqual(loki.urn.getLastSegment('urn:com:loki!test.jpg'),'test.jpg')
+        self.assertEqual(loki.urn.get_last_segment('urn:com:loki!test.jpg'),'test.jpg')
+        self.assertEqual(loki.urn.get_last_segment('urn#embeded1'),'embeded1')
+        self.assertEqual(loki.urn.get_last_segment('urn:$:data:test2'),'test2')
+        self.assertEqual(loki.urn.get_last_segment(''),'')
+        self.assertEqual(loki.urn.get_last_segment(None),None)
 
 
 if __name__ == "__main__":
