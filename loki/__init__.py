@@ -19,16 +19,23 @@ from loki.data import Data
 
 
 class Loki:
-    def __init__(self, config_file_name):
-        config_file_name = os.path.expanduser(config_file_name)
-        if not os.path.isfile(config_file_name):
-            """FileNotFoundError"""
-            raise Exception("File not found: "+config_file_name)
+    def __init__(self, config_file_name=None, username=None, password=None, hosturl=None):
+        if config_file_name is not None:
+            config_file_name = os.path.expanduser(config_file_name)
+            if not os.path.isfile(config_file_name):
+                """FileNotFoundError"""
+                raise Exception("File not found: "+config_file_name)
+            config = configparser.RawConfigParser()
+            self.properties = config.read(config_file_name)
+            self._username = config.get('default', 'username')
+            self._password = config.get('default', 'password')
+            self._hosturl = config.get('default', 'hosturl')
+        else:
+            self._username = username
+            self._password = password
+            self._hosturl = hosturl
 
-        config = configparser.RawConfigParser()
-        self.properties = config.read(config_file_name)
-        self._username = config.get('default', 'username')
-        self._password = config.get('default', 'password')
-        self._hosturl = config.get('default', 'hosturl')
         self.urn = Urn()
         self.data = Data(self)
+
+

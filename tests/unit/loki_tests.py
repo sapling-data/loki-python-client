@@ -16,7 +16,13 @@ from loki import Loki
 
 class TestLokiClient(unittest.TestCase):
     def testReadConfig(self):
-        loki = Loki("config.txt");
+        loki = Loki("config.txt")
         self.assertEqual(loki._username, "testuser")
         self.assertEqual(loki._password, "testpassword")
         self.assertEqual(loki._hosturl, "https://apiurl")
+
+    def testPassConfig(self):
+        loki = Loki(username='test2user', password='test2password', hosturl="https://testurl")
+        self.assertEqual(loki._username, "test2user")
+        self.assertEqual(loki._password, "test2password")
+        self.assertEqual(loki._hosturl, "https://testurl")
