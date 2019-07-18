@@ -30,6 +30,8 @@ To try out the library you can use the following example code.  You will need to
     loki = Loki("~/loki-python-client/config.txt")
     # or to hardcode: loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
+    if not result.is_success():
+        raise Exception(result.get_error())
     print(result.get_response().status_code)
     print(result.get_response().content)
     print(result.get_response().json())
@@ -65,6 +67,8 @@ Test with this code in your notebook. You will need to supply your own loki quer
     print( loki._username )
     print( loki._hosturl )
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
+    if not result.is_success():
+        raise Exception(result.get_error())
     data = pd.DataFrame( result.to_array() )
     data.columns = ['plan_type', 'year', 'patient_count']
     data.head()
