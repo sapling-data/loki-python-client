@@ -24,19 +24,19 @@ class Data:
     def list(self, urn, options):
         url = self._web_service_url('urn:com:loki:core:model:api:list', urn, options)
         r = requests.get(url, auth=(self.loki._username, self.loki._password))
-        return r
+        return ListResults(r)
 
     def save_entity(self, data, entity_view_urn, options):
         url = self._web_service_url(entity_view_urn, data.urn, options)
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                           auth=(self.loki._username, self.loki._password))
-        return r
+        return SaveResults(r)
 
     def load_entity(self, urn, entity_view_urn, options):
         url = self._web_service_url(entity_view_urn, urn, options)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
-        return r
+        return LoadEntityResponse(r)
 
     def _resource_url(self, urn, options):
         return self._web_service_url("urn:com:loki:core:model:api:resource", urn, options)
@@ -62,7 +62,7 @@ class Data:
         url = self._web_service_url("urn:com:loki:core:model:api:resource", urn, options)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
-        return r
+        return LoadResourceResponse(r)
 
     def download_resource(self, urn, options, file_name):
         file_name = os.path.expanduser(file_name)
@@ -71,7 +71,7 @@ class Data:
                          auth=(self.loki._username, self.loki._password))
         with open(file_name, 'wb') as f:
             f.write(r.content)
-        return r
+        return LoadResourceResponse(r)
 
     def query(self, query_urn, options):
         url = self._web_service_url("urn:com:loki:core:model:api:query", None, options)
@@ -81,11 +81,34 @@ class Data:
         return QueryResults(r)
 
 
-class QueryResults:
-    def __init__(self, response):
+class LokiResponse:
+    def __init__(self, response, parse):
         self.response = response
-        result = response.json()
-        self.results = result["results"]
+        if parse:
+            try:
+                self.resData = response.json()
+            except Exception:
+                self.resData = None
+
+    def get_response(self):
+        return self.response
+
+    def is_success(self):
+        return self.response.status_code == 200
+
+    def get_error(self):
+        msg = "Error: "+str(self.response.status_code)
+        if self.resData is not None:
+            if "errors" in self.resData:
+                msg = self.resData["errors"][0].get("systemMessage", msg);
+        return msg
+
+
+class LokiResults(LokiResponse):
+    def __init__(self, response):
+        LokiResponse.__init__(self, response, True)
+        if response.status_code == 200:
+            self.results = self.resData["results"]
 
     def __iter__(self):
         self.row = 0
@@ -104,5 +127,34 @@ class QueryResults:
             a.append(v)
         return a
 
-    def get_response(self):
-        return self.response
+
+class SaveResponse(LokiResponse):
+    def __init__(self, response):
+        LokiResponse.__init__(self, response, True)
+
+
+class LoadEntityResponse(LokiResponse):
+    def __init__(self, response):
+        LokiResponse.__init__(self, response, True)
+
+    def get_data(self):
+        return self.resData
+
+
+class LoadResourceResponse(LokiResponse):
+    def __init__(self, response):
+        parse = (response.status_code != 200)
+        LokiResponse.__init__(self, response, parse)
+
+    def get_data(self):
+        return self.response.content
+
+
+class ListResults(LokiResults):
+    def __init__(self, response):
+        LokiResults.__init__(self, response)
+
+
+class QueryResults(LokiResults):
+    def __init__(self, response):
+        LokiResults.__init__(self, response)
