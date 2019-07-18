@@ -109,12 +109,16 @@ class LokiResults(LokiResponse):
         LokiResponse.__init__(self, response, True)
         if response.status_code == 200:
             self.results = self.resData["results"]
+        else:
+            self.results = None
 
     def __iter__(self):
         self.row = 0
         return self
 
     def __next__(self):
+        if self.results is None:
+            raise StopIteration
         if self.row < len(self.results):
             self.row = self.row + 1
             return self.results[self.row-1]

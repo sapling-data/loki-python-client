@@ -74,6 +74,7 @@ class TestList(unittest.TestCase):
         loki = Loki(config_file)
         result = loki.data.query("urn:com:loki:examples:model:queries:xxxlistDocumentsxx",None)
         self.assertEqual(result.is_success(), False)
+        self.assertEqual(result.to_array(), [])
         print(result.get_error())
 
     def test_query403(self):
@@ -82,6 +83,7 @@ class TestList(unittest.TestCase):
         loki._password = "bogusxxxxx"
         result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
         self.assertEqual(result.is_success(), False)
+        self.assertEqual(result.to_array(), [])
         print(result.get_error())
 
 
