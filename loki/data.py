@@ -75,7 +75,7 @@ class Data:
 
     def query(self, query_urn, options):
         url = self._web_service_url("urn:com:loki:core:model:api:query", None, options)
-        data = {"queryUrn": query_urn}
+        data = {"queryUrn": query_urn, "mapResults": true}
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         return QueryResults(r)
