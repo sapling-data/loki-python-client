@@ -4,31 +4,27 @@ Python client for the Loki Cloud OS API. This library makes it easy to call the 
 # Background
 The intent of this project is to allow contribuitions to the Loki API Python Client from any existing users of the Loki technology. We have open sourced this effort to remove restrictions and resolve ownership issues in a way that best benefits the Loki user community. For non-Loki users we welcome the use of this project as a reference on creating a Python API client and we welcome any feedback on that topic. That being said, we recognize that we, as the founders of this project, are not experts in the subject of Python APIs (or on open source project management for that matter) and hope to learn something from the effort.
 
-# Contributions
-We are currently not actively seeking contributions from the larger community. Instead we are using this project for contribution by existing users of the Loki technology. 
-
 # About Loki
 Loki is a closed source application server technology developed by Sapling Data, LLC. The Loki techology is a data oriented cloud operating system that allows you to build and deploy applications in the cloud. Loki automatically generates web services APIs from the models that you define in the application. For more information about the Loki technology please see https://saplingdata.com.
 
 # Quick Start
-Make sure you are running a python3 environment.
+Make sure you are running a Python 3 environment.
 
 First, install the library. In the terminal run this command to pull the latest library development code:
 
-    $ pip install -e git+https://github.com/mtruchard/loki-python-client.git#egg=loki-python-client
+    $ python3 -m pip install git+https://github.com/mtruchard/loki-python-client.git
 
-Optionally, you can set up credentials in a file of your choosing. In our examples and tests we install them in a file "~/loki-python-client/config.txt" on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
+Optionally, you can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
 
     [default]
     username = myuser
     password = mypassword
     hosturl = https://host/appName
 
-To try out the library you can use the following example code.  You will need to supply your own loki query urn and credential file path.
+To try out the library you can use the following example code.  You will need to supply your own Loki query urn and credential file path.
 
     from loki import Loki
-    loki = Loki("~/loki-python-client/config.txt")
-    # or to hardcode: loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
+    loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
     if not result.is_success():
         raise Exception(result.get_error())
@@ -41,12 +37,12 @@ To try out the library you can use the following example code.  You will need to
 
 # Using In Jupyter Notebook
 
-Make sure you are running a python3 environment.
+Make sure you are running a Python 3 environment.
 
 Open the terminal in Jupyter Notebook and install the library. To pull the latest library development code use:
 
     $ source activate python3
-    $ pip install -e git+https://github.com/mtruchard/loki-python-client.git#egg=loki-python-client
+    $ python3 -m pip install git+https://github.com/mtruchard/loki-python-client.git
 
 You can provide your credentials directly in the notebook code, or optionally, you can set up credentials in a file of your choosing. In our example we install them in a file "~/loki-python-client/config.txt". To the file add your credentials and url for the Loki API:
 
@@ -76,7 +72,7 @@ Test with this code in your notebook. You will need to supply your own loki quer
 # Development
 
 ## Getting Started
-Install python 2.7, virtualenv, and setup your environment.
+Install python 3.x, virtualenv, and setup your environment.
 
 Clone the git repo:
 
