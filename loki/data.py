@@ -107,6 +107,7 @@ class LokiResponse:
 class LokiResults(LokiResponse):
     def __init__(self, response):
         LokiResponse.__init__(self, response, True)
+#         Michael: I think you should send the columnNames as well as the results; as far as I can tell, there are a lot of data framing functions in Python that require explicit column naming…
         if response.status_code == 200:
             self.results = self.resData["results"]
         else:
