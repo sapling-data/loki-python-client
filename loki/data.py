@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 All Rights Reserved, SaplingData LLC, http://saplingdata.com
+# Copyright (c) 2024 All Rights Reserved, Sapling Data Inc, https://saplingdata.com
 #
 # Licensed under the MIT License (the "License"). You
 # may not use this file except in compliance with the License. A copy of
@@ -22,7 +22,7 @@ class Data:
         self.loki = loki
 
     def list(self, urn, options):
-        url = self._web_service_url('urn:com:loki:core:model:api:list', urn, options)
+        url = self._web_service_url('urn:com:loki:core:model:webServices:list', urn, options)
         r = requests.get(url, auth=(self.loki._username, self.loki._password))
         return ListResults(r)
 
@@ -39,7 +39,7 @@ class Data:
         return LoadEntityResponse(r)
 
     def _resource_url(self, urn, options):
-        return self._web_service_url("urn:com:loki:core:model:api:resource", urn, options)
+        return self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
 
     def _web_service_url(self, service_urn, subject_urn, options):
         url = self.loki._hosturl + '/api/' + loki.utils.urn_to_url(service_urn)
@@ -59,14 +59,14 @@ class Data:
         return url
 
     def load_resource(self, urn, options):
-        url = self._web_service_url("urn:com:loki:core:model:api:resource", urn, options)
+        url = self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         return LoadResourceResponse(r)
 
     def download_resource(self, urn, options, file_name):
         file_name = os.path.expanduser(file_name)
-        url = self._web_service_url("urn:com:loki:core:model:api:resource", urn, options)
+        url = self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         with open(file_name, 'wb') as f:
@@ -74,7 +74,7 @@ class Data:
         return LoadResourceResponse(r)
 
     def query(self, query_urn, options):
-        url = self._web_service_url("urn:com:loki:core:model:api:query", None, options)
+        url = self._web_service_url("urn:com:loki:core:model:webServices:query", None, options)
         data = {"queryUrn": query_urn}
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))

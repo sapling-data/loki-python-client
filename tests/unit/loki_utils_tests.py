@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 All Rights Reserved, SaplingData LLC, http://saplingdata.com
+# Copyright (c) 2024 All Rights Reserved, Sapling Data Inc., https://saplingdata.com
 #
 # Licensed under the MIT License (the "License"). You
 # may not use this file except in compliance with the License. A copy of

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 All Rights Reserved, SaplingData LLC, http://saplingdata.com
+# Copyright (c) 2024 All Rights Reserved, SaplingData Inc., https://saplingdata.com
 #
 # Licensed under the MIT License (the "License"). You
 # may not use this file except in compliance with the License. A copy of
@@ -16,7 +16,7 @@ from loki import Loki
 
 class TestLokiClient(unittest.TestCase):
     def testReadConfig(self):
-        loki = Loki("config.txt")
+        loki = Loki("./tests/unit/config.txt")
         self.assertEqual(loki._username, "testuser")
         self.assertEqual(loki._password, "testpassword")
         self.assertEqual(loki._hosturl, "https://apiurl")

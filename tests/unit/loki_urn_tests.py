@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 All Rights Reserved, SaplingData LLC, http://saplingdata.com
+# Copyright (c) 2024 All Rights Reserved, Sapling Data Inc, https://saplingdata.com
 #
 # Licensed under the MIT License (the "License"). You
 # may not use this file except in compliance with the License. A copy of
@@ -25,19 +25,19 @@ class TestToLokiUrnSegment(unittest.TestCase):
 
     def testGetValidSegment(self):
         """ Tests that to_loki_urn_segment returns a value of None given various input. """
-        loki = Loki("config.txt")
+        loki = Loki()
         for val in self.known_vals:
             result = loki.urn.get_valid_segment(val)
             self.assertEqual(self.known_vals[val], result)
             
     def testIsNew(self):
-        loki = Loki("config.txt")
+        loki = Loki()
         self.assertEqual(loki.urn.is_new('urn:com:loki:$'),True)
         self.assertEqual(loki.urn.is_new('urn:$:loki:data!text.txt'),True)
         self.assertEqual(loki.urn.is_new('urn:com:loki:8181'),False)
         
     def testGetLastSegment(self):
-        loki = Loki("config.txt")
+        loki = Loki()
         self.assertEqual(loki.urn.get_last_segment('urn:com:loki!test.jpg'),'test.jpg')
         self.assertEqual(loki.urn.get_last_segment('urn#embeded1'),'embeded1')
         self.assertEqual(loki.urn.get_last_segment('urn:$:data:test2'),'test2')
