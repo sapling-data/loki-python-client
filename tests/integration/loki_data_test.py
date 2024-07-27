@@ -24,7 +24,7 @@ class TestList(unittest.TestCase):
     def test_list(self):
         print("=============== TEST LIST ===========================================================")
         loki = Loki(config_file,config_section)
-        result = loki.data.list("urn:com:loki:core:model:types",None)
+        result = loki.data.list("urn:com:loki:core:model:types")
         print(result.get_response())
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
@@ -36,7 +36,7 @@ class TestList(unittest.TestCase):
         loki = Loki(config_file,config_section)
         urn = "urn:com:loki:meta:model:types:error"
         view = "urn:com:loki:meta:model:types:entityView"
-        result = loki.data.load_entity(urn, view, None)
+        result = loki.data.load_entity(urn, view)
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
         print(result.get_data())
@@ -45,7 +45,7 @@ class TestList(unittest.TestCase):
         print("=============== TEST LOAD RESOURCE ===========================================================")
         loki = Loki(config_file,config_section)
         urn = "urn:com:loki:core:model:webServices:list!listApi.md"
-        result = loki.data.load_resource(urn, None)
+        result = loki.data.load_resource(urn)
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
         print(result.get_data())
@@ -54,7 +54,7 @@ class TestList(unittest.TestCase):
         print("=============== TEST DOWNLOAD RESOURCE ===========================================================")
         loki = Loki(config_file,config_section)
         urn = "urn:com:loki:core:model:webServices:list!listApi.md"
-        result = loki.data.download_resource(urn,None, temp_files+"/listApi.md")
+        result = loki.data.download_resource(urn, temp_files+"/listApi.md")
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
         print(result.get_data())
@@ -63,7 +63,7 @@ class TestList(unittest.TestCase):
         print("=============== TEST QUERY ===========================================================")
         loki = Loki(config_file,config_section)
         query_urn = "urn:com:saplingdata:analyticsBuilder:model:queries:getAllProjects"
-        result = loki.data.query(query_urn, None)
+        result = loki.data.query(query_urn = query_urn)
         print(result.get_response())
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
@@ -78,7 +78,7 @@ class TestList(unittest.TestCase):
     def test_query404(self):
         print("=============== TEST QUERY 404 ===========================================================")
         loki = Loki(config_file,config_section)
-        result = loki.data.query("urn:com:saplingdata:analyticsBuilder:model:queries:getAllProjectsxx",None)
+        result = loki.data.query(query_urn = "urn:com:saplingdata:analyticsBuilder:model:queries:getAllProjectsxx")
         self.assertEqual(result.is_success(), False)
         self.assertEqual(result.to_array(), [])
         print(result.get_error())
@@ -87,7 +87,7 @@ class TestList(unittest.TestCase):
         print("=============== TEST QUERY 403 ===========================================================")
         loki = Loki(config_file,config_section)
         loki._password = "bogusxxxxx"
-        result = loki.data.query("urn:com:saplingdata:analyticsBuilder:model:queries:getAllProjects",None)
+        result = loki.data.query(query_urn = "urn:com:saplingdata:analyticsBuilder:model:queries:getAllProjects")
         self.assertEqual(result.is_success(), False)
         self.assertEqual(result.to_array(), [])
         print(result.get_error())

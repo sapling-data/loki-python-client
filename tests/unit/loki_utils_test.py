@@ -13,19 +13,6 @@ __author__ = 'ada'
 import unittest
 import loki.utils
 
-
-class TestUrnToUrl(unittest.TestCase):
-
-    known_vals = {None:                                     None,
-                  'urn:com:lokipy:test:abc':                'urn/com/lokipy/test/abc'
-                  }
-
-    def test_urn_to_url(self):
-        for val in self.known_vals:
-            result = loki.utils.urn_to_url(val)
-            self.assertEqual(result, self.known_vals[val])
-
-
 class TestToNumber(unittest.TestCase):
     """ Unit tests to evaluate the behavior of to_number. """
 

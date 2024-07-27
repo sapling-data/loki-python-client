@@ -14,67 +14,61 @@ __date__ = "$Sep 23, 2015 4:54:32 PM$"
 import requests
 import os
 import json
-import loki.utils
 
 
 class Data:
     def __init__(self, loki):
         self.loki = loki
 
-    def list(self, urn, options):
-        url = self._web_service_url('urn:com:loki:core:model:webServices:list', urn, options)
+    def list(self, urn, /, *, output_view = None, data_space_urn = None):
+        urlParams = { "format":"json", "outputView":output_view, "dataSpaceUrn": data_space_urn }
+        url = self.loki.web.web_service_url('urn:com:loki:core:model:webServices:list', subject_urn = urn, urlParams = urlParams)
         r = requests.get(url, auth=(self.loki._username, self.loki._password))
         return ListResults(r)
 
-    def save_entity(self, data, entity_view_urn, options):
-        url = self._web_service_url(entity_view_urn, data.urn, options)
+    def save_entity(self, data, entity_view_urn, /, *, data_space_urn = None):
+        urlParams = { "format":"json", "dataSpaceUrn": data_space_urn }
+        url = self.loki.web.web_service_url(entity_view_urn, subject_urn = data.urn, urlParams = urlParams)
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                           auth=(self.loki._username, self.loki._password))
-        return SaveResults(r)
+        return SaveResponse(r)
 
-    def load_entity(self, urn, entity_view_urn, options):
-        url = self._web_service_url(entity_view_urn, urn, options)
+    def load_entity(self, urn, entity_view_urn, /, *, data_space_urn = None):
+        urlParams = { "format":"json", "dataSpaceUrn": data_space_urn }
+        url = self.loki.web.web_service_url(entity_view_urn, subject_urn = urn, urlParams = urlParams)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         return LoadEntityResponse(r)
 
-    def _resource_url(self, urn, options):
-        return self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
-
-    def _web_service_url(self, service_urn, subject_urn, options):
-        url = self.loki._hosturl + '/api/' + loki.utils.urn_to_url(service_urn)
-        if subject_urn is not None:
-            url = url + '/v/' + loki.utils.urn_to_url(subject_urn)
-        params = ""
-        if options is not None and options.format is not None:
-            params = params + "&format=" + options.format
-        else:
-            params = params + "&format=json"
-
-        if options is not None and options.outputView  is not None:
-            params = params + '&outputView=' + loki.utils.urn_to_url(options.outputView)
-
-        if params != "":
-            url = url + "?" + params[1:]
-        return url
-
-    def load_resource(self, urn, options):
-        url = self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
+    def load_resource(self, urn, /, *, data_space_urn = None):
+        urlParams = { "format":"json", "dataSpaceUrn": data_space_urn }
+        url = self.loki.web.web_service_url("urn:com:loki:core:model:webServices:resource", subject_urn = urn, urlParams = urlParams)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         return LoadResourceResponse(r)
 
-    def download_resource(self, urn, options, file_name):
+    def download_resource(self, urn, file_name, /, *, data_space_urn = None):
+        urlParams = { "format":"json", "dataSpaceUrn": data_space_urn }
         file_name = os.path.expanduser(file_name)
-        url = self._web_service_url("urn:com:loki:core:model:webServices:resource", urn, options)
+        url = self.loki.web.web_service_url("urn:com:loki:core:model:webServices:resource", subject_urn = urn, urlParams = urlParams)
         r = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))
         with open(file_name, 'wb') as f:
             f.write(r.content)
         return LoadResourceResponse(r)
 
-    def query(self, query_urn, options):
-        url = self._web_service_url("urn:com:loki:core:model:webServices:query", None, options)
+    def query(self, /, *, query_urn = None, query = None, data_space_urn = None):
+        urlParams = {
+            "format":"json",
+            "dataSpaceUrn": data_space_urn
+        }
+        if query_urn is not None:
+            urlParams["queryUrn"] = query_urn
+        elif query is not None:
+            urlParams["query"] = query
+        else:
+             raise Exception("Loki query requres either a query_urn or a query")
+        url = self.loki.web.web_service_url("urn:com:loki:core:model:webServices:query", urlParams = urlParams)
         data = {"queryUrn": query_urn}
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                          auth=(self.loki._username, self.loki._password))

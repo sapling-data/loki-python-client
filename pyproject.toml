@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "loki-python-client"
+version = "1.1.0"
+description = "Loki Python Client"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Michael Truchard", email = "mtruchard@saplingdata.com" }
+]
+maintainers = [
+  {name = "Michael Truchard", email = "mtruchard@saplingdata.com" }
+]
+dependencies = [
+  "requests"
+]
+
+[project.optional-dependencies]
+# dev = ["check-manifest"]
+# test = ["coverage"]
+
+[project.urls]
+"Homepage" = "https://github.com/sapling-data/loki-python-client"
+"Source" = "https://github.com/sapling-data/loki-python-client"
+
+[project.scripts]
+# sample = "sample:main"
+
+[tool.setuptools]
+# package-data = {"sample" = ["*.dat"]}

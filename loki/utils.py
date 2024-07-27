@@ -13,13 +13,6 @@ __author__ = "mtruchard"
 import re
 
 
-def urn_to_url(urn):
-    """ Turns a urn into a path for a url """
-    if urn is None:
-        return None
-    return urn.replace(":", "/")
-
-
 def to_loki_date(date):
     """ Returns a date in YYYY-MM-DD format. """
     if date == '':

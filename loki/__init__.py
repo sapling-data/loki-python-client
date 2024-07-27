@@ -16,6 +16,7 @@ import configparser
 import os
 from loki.urn import Urn
 from loki.data import Data
+from loki.web import Web
 
 
 class Loki:
@@ -37,5 +38,6 @@ class Loki:
 
         self.urn = Urn()
         self.data = Data(self)
+        self.web = Web(self)
 
 

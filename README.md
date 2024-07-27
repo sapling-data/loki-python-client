@@ -12,7 +12,7 @@ Make sure you are running a Python 3 environment.
 
 First, install the library. In the terminal run this command to pull the latest library development code:
 
-    $ python3 -m pip install git+https://github.com/mtruchard/loki-python-client.git
+    $ python3 -m pip install git+https://github.com/sapling-data/loki-python-client.git
 
 Optionally, you can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
 
@@ -25,7 +25,7 @@ To try out the library you can use the following example code.  You will need to
 
     from loki import Loki
     loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
-    result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
+    result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments")
     if not result.is_success():
         raise Exception(result.get_error())
     print(result.get_response().status_code)
@@ -42,7 +42,7 @@ Make sure you are running a Python 3 environment.
 Open the terminal in Jupyter Notebook and install the library. To pull the latest library development code use:
 
     $ source activate python3
-    $ python3 -m pip install git+https://github.com/mtruchard/loki-python-client.git
+    $ python3 -m pip install git+https://github.com/sapling-data/loki-python-client.git
 
 You can provide your credentials directly in the notebook code, or optionally, you can set up credentials in a file of your choosing. In our example we install them in a file "~/loki-python-client/config.txt". To the file add your credentials and url for the Loki API:
 
@@ -72,8 +72,31 @@ Test with this code in your notebook. You will need to supply your own loki quer
 # Development
 
 ## Getting Started
-Install python 3.x, virtualenv, and setup your environment.
 
 Clone the git repo:
 
-    $ git clone https://github.com/mtruchard/loki-python-client.git
+    $ git clone https://github.com/sapling-data/loki-python-client.git
+
+### Set up a Python Environment
+
+Conda is used in this project with its configuration in the environment.yml file
+
+1. Install Anaconda from: https://www.anaconda.com/download/
+2. In the project folder run:
+
+    conda env create -f environment.yml -p .conda
+
+3. Activate the conda environment using:
+
+    conda activate .conda
+
+### Testing
+
+In this project unittest is used for testing. All tests are under the "tests" directory.
+The "unit" subdirectory contains tests that can be run localy without a connection to a Loki server.
+The "integration" subdirectory contains tests that require a connection to specific application on a loki server.
+Because they connect to a loki server, the integration tests can more fully test loki-python-client functionality.
+
+To run tests you can use:
+
+    python -m unittest discover -p "*_test.py"

@@ -1,0 +1,6 @@
+name: loki-python-client
+
+dependencies:
+  - python=3.11.9
+  - python-dotenv
+  - requests
