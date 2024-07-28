@@ -28,7 +28,7 @@ class Data:
 
     def save_entity(self, data, entity_view_urn, /, *, data_space_urn = None):
         urlParams = { "format":"json", "dataSpaceUrn": data_space_urn }
-        url = self.loki.web.web_service_url(entity_view_urn, subject_urn = data.urn, urlParams = urlParams)
+        url = self.loki.web.web_service_url(entity_view_urn, subject_urn = data["urn"], urlParams = urlParams)
         r = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'},
                           auth=(self.loki._username, self.loki._password))
         return SaveResponse(r)
@@ -119,11 +119,8 @@ class LokiResults(LokiResponse):
         else:
             raise StopIteration
 
-    def to_array(self):
-        a = []
-        for v in iter(self):
-            a.append(v)
-        return a
+    def get_data(self):
+        return self.results
 
 
 class SaveResponse(LokiResponse):
@@ -156,3 +153,6 @@ class ListResults(LokiResults):
 class QueryResults(LokiResults):
     def __init__(self, response):
         LokiResults.__init__(self, response)
+
+    def get_columns(self):
+        return self.resData["columnNames"]
