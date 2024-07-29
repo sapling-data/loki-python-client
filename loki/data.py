@@ -23,9 +23,24 @@ class Data:
     def __init__(self, loki):
         self.loki = loki
 
-    def list(self, urn, /, *, output_view = None, data_space_urn = None):
-        urlParams = { "format":"json", "outputView":output_view, "dataSpaceUrn": data_space_urn }
-        url = self.loki.web.web_service_url('urn:com:loki:core:model:webServices:list', subject_urn = urn, urlParams = urlParams)
+    def list(self, parent_urn, /, *, output_view_urn = None, data_space_urn = None):
+        """List all items (entities, resources and directories) under the given parent urn
+            Parameters
+            ----------
+            parent_urn : str
+                The urn of the parent directory to be listed
+            output_view_urn : str, optional
+                The view used to load data for each item listed. If not provided then only the urn will be returned for each item.
+            data_space_urn : int, optional
+                The data space to run the list on
+
+            Returns
+            -------
+            list_results
+                a ListResults object that contains the result of the list operation
+        """
+        urlParams = { "format":"json", "outputView":output_view_urn, "dataSpaceUrn": data_space_urn }
+        url = self.loki.web.web_service_url('urn:com:loki:core:model:webServices:list', subject_urn = parent_urn, urlParams = urlParams)
         r = requests.get(url, auth=(self.loki._username, self.loki._password))
         return ListResults(r)
 
