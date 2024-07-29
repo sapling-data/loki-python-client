@@ -5,7 +5,7 @@ Python client for the Loki Cloud OS API. This library makes it easy to call the 
 The intent of this project is to allow contribuitions to the Loki API Python Client from any existing users of the Loki technology. We have open sourced this effort to remove restrictions and resolve ownership issues in a way that best benefits the Loki user community. For non-Loki users we welcome the use of this project as a reference on creating a Python API client and we welcome any feedback on that topic. That being said, we recognize that we, as the founders of this project, are not experts in the subject of Python APIs (or on open source project management for that matter) and hope to learn something from the effort.
 
 # About Loki
-Loki is a closed source application server technology developed by Sapling Data, LLC. The Loki techology is a data oriented cloud operating system that allows you to build and deploy applications in the cloud. Loki automatically generates web services APIs from the models that you define in the application. For more information about the Loki technology please see https://saplingdata.com.
+Loki is a closed source application server technology developed by Sapling Data, Inc. The Loki techology is a data oriented cloud operating system that allows you to build and deploy applications in the cloud. Loki automatically generates web services APIs from the models that you define in the application. For more information about the Loki technology please see https://saplingdata.com.
 
 # Quick Start
 Make sure you are running a Python 3 environment.
@@ -14,7 +14,7 @@ First, install the library. In the terminal run this command to pull the latest 
 
     $ python3 -m pip install git+https://github.com/sapling-data/loki-python-client.git
 
-Optionally, you can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
+The loki-python-client requires a connection to a running Loki application. You can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
 
     [default]
     username = myuser
@@ -31,7 +31,7 @@ To try out the library you can use the following example code.  You will need to
     print(result.get_response().status_code)
     print(result.get_response().content)
     print(result.get_response().json())
-    for r in result.to_array():
+    for r in result:
         for v in r:
             print(v)
 
@@ -65,7 +65,7 @@ Test with this code in your notebook. You will need to supply your own loki quer
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
     if not result.is_success():
         raise Exception(result.get_error())
-    data = pd.DataFrame( result.to_array() )
+    data = pd.DataFrame( result.get_data() )
     data.columns = ['plan_type', 'year', 'patient_count']
     data.head()
 

@@ -28,8 +28,14 @@ class TestList(unittest.TestCase):
         print(result.get_response())
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
+        print("Results: get_data [")
         for r in result.get_data():
-            print(r["urn"])
+            print("    "+r["urn"])
+        print("]")
+        print("Results: iterator [")
+        for r in result:
+            print("    "+r["urn"])
+        print("]")
         
     def test_load_entity(self):
         print("\n=============== TEST LOAD ENTITY ===========================================================")
@@ -67,12 +73,24 @@ class TestList(unittest.TestCase):
         print(result.get_response())
         self.assertEqual(result.is_success(), True)
         self.assertEqual(200, result.get_response().status_code)
-        print("Results: [")
-        for r in result:
-            print("[")
+        print("Results: get_data [")
+        for r in result.get_data():
+            print("    [")
             for v in r:
-                print(v)
-            print("]")
+                print("        "+str(v))
+            print("    ]")
+        print("]")
+        self.assertEqual(200, result.get_response().status_code)
+        print("Results Iterator: [")
+        for r in result:
+            print("    [")
+            for v in r:
+                print("        "+str(v))
+            print("    ]")
+        print("]")
+        print("Results get_data_mapped: [")
+        for r in result.get_data_mapped():
+            print("    "+str(r))
         print("]")
 
     def test_query404(self):

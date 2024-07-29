@@ -17,6 +17,9 @@ import json
 
 
 class Data:
+    """An object that has a set of functions for working with Loki data
+    """
+
     def __init__(self, loki):
         self.loki = loki
 
@@ -156,3 +159,22 @@ class QueryResults(LokiResults):
 
     def get_columns(self):
         return self.resData["columnNames"]
+
+    def get_data_mapped(self):
+        """Get Data mapped into rows of dictionary objects that use the column names as keys
+
+        Returns
+        -------
+        mapped_data
+            an array of dictionary objects that use the column names as keys
+        """
+        mapped_data = []
+        columns = self.get_columns()
+        for row in self.results:
+            obj = {}
+            for idx, val in enumerate(row):
+                col = columns[idx]
+                obj[col] = val
+            mapped_data.append(obj)
+        return mapped_data
+    
