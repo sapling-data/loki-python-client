@@ -14,7 +14,7 @@ First, install the library. In the terminal run this command to pull the latest 
 
     $ python3 -m pip install git+https://github.com/sapling-data/loki-python-client.git
 
-The loki-python-client requires a connection to a running Loki application. You can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system. To the file add your credentials and url for the Loki API:
+The loki-python-client requires a connection to a running Loki application. You can set up credentials in a file of your choosing. In our examples and tests we install them in a .env file on our local Mac OS or linux system at "~/loki/loki-cloud/loki-node/properties/lokiPythonCredentials.env". To the file add your credentials and url for the Loki API:
 
     [default]
     username = myuser
@@ -24,7 +24,8 @@ The loki-python-client requires a connection to a running Loki application. You 
 To try out the library you can use the following example code.  You will need to supply your own Loki query urn and credential file path.
 
     from loki import Loki
-    loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
+    loki = Loki(config_file_name="~/loki/loki-cloud/loki-node/properties/lokiPythonCredentials.env")
+    # or to hardcode: loki = Loki(username='testuser', password='testpassword', hosturl="https://host/appName")
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments")
     if not result.is_success():
         raise Exception(result.get_error())
@@ -59,7 +60,7 @@ Test with this code in your notebook. You will need to supply your own loki quer
     import numpy as np
     from loki import Loki
     loki = Loki("/home/user/loki/config.txt")
-    # or to hardcode: loki = Loki(username='testuser', password='testpassword', hosturl="https://testurl")
+    # or to hardcode: loki = Loki(username='testuser', password='testpassword', hosturl="https://host/appName")
     print( loki._username )
     print( loki._hosturl )
     result = loki.data.query("urn:com:loki:examples:model:queries:listDocuments",None)
